@@ -13,6 +13,7 @@ try:
     the_big_dictionary = {}
 
 
+
     def FechasAltaAndOut(dictionario):
 
         cursor_fechas = conexion.cursor()
