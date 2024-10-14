@@ -8,6 +8,7 @@ try:
     conexion = pyodbc.connect(
         'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db')
     print("Conexión exitosa")
+
     # cursor = conexion.cursor()
     # cursor.execute("SELECT  * FROM VwMJVtasOperadora ")
     the_big_dictionary = {}
