@@ -15,6 +15,8 @@ try:
 
     def FechasAltaAndOut(dictionario):
 
+
+
         cursor_fechas = conexion.cursor()
         cursor_fechas.execute("SELECT * FROM VwMJVtasOperadora")
 
