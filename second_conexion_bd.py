@@ -15,8 +15,6 @@ try:
 
     def FechasAltaAndOut(dictionario):
 
-
-
         cursor_fechas = conexion.cursor()
         cursor_fechas.execute("SELECT * FROM VwMJVtasOperadora")
 
@@ -26,9 +24,32 @@ try:
         segunda_fecha = datetime.strptime(input("Ingrese la segunda fecha(YYYY-MM-DD): "), '%Y-%m-%d')
 
         counter = 0
-        fechaAlta_list = list()
-        precioMXN_list = list()
+        negocio_list = list()
+        servicio_list = list()
+        proveedor_nombre = list()
+        cliente_nombre = list()
+        descripcion_2 = list()
+        oficina_nombre = list()
+        pedido = list()
+        vendedor_nombre = list()
+        art_categoria = list()
         cantidad_list = list()
+        gran_total_mxn = list()
+        gran_total_usd = list()
+        beneficio_usd = list()
+        tipo_cambio = list()
+        categoria_cte = list()
+        mes = list()
+        anio = list()
+        codigo_guia = list()
+        referencia = list()
+        origen = list()
+        fechaAlta_list = list()
+        fecha_in = list()
+        fecha_out = list()
+        semana_alta = list()
+        mes_alta = list()
+        precioMXN_list = list()
         nueva_fecha_list = list()
 
         while all_rows is not None:
@@ -40,14 +61,38 @@ try:
 
                 if type(all_rows[19]) == type(None):
                     # print(str(all_rows[19]))
-                    precioMXN_list.append(0)
+                    # precioMXN_list.append(0)
+
                 else:
                     # print(all_rows[19])
-                    precioMXN_list.append(float(all_rows[19]))
+                    # precioMXN_list.append(float(all_rows[19]))
 
+                negocio_list.append(all_rows[1])
+                servicio_list.append(all_rows[5])
+                proveedor_nombre.append(all_rows[7])
+                cliente_nombre.append(all_rows[9])
+                descripcion_2.append(all_rows[10])
+                oficina_nombre.append(all_rows[11])
+                pedido.append(all_rows[13])
+                vendedor_nombre.append(all_rows[16])
+                art_categoria.append(all_rows[17])
                 cantidad_list.append(all_rows[18])
-                # fechaAlta_list.append(all_rows[counter])
+                gran_total_mxn.append(all_rows[22])
+                gran_total_usd.append(all_rows[28])
+                beneficio_usd.append(all_rows[30])
+                tipo_cambio.append(all_rows[31])
+                categoria_cte.append(all_rows[33])
+                mes.append(all_rows[34])
+                anio.append(all_rows[35])
+                codigo_guia.append(all_rows[36])
+                referencia.append(all_rows[37])
+                origen.append(all_rows[38])
                 nueva_fecha_list.append(fechaAlta_list[counter])
+                fecha_in.append(all_rows[40])
+                fecha_out.append(all_rows[41])
+                semana_alta.append(all_rows[45])
+                mes_alta.append(all_rows[47])
+                # fechaAlta_list.append(all_rows[counter])
 
 
             # print(all_rows[18], all_rows[19], fechaAlta_list[counter])
@@ -110,7 +155,6 @@ except Exception as e:
 
 finally:
 
-    # cursor.close()
     conexion.close()
 
     print("Conexión finalizada")
