@@ -67,6 +67,30 @@ try:
                     # print(all_rows[19])
                     gran_total_mxn.append(float(all_rows[22]))
 
+                if type(all_rows[28]) == type(None):
+                    # print(str(all_rows[19]))
+                    gran_total_usd.append(0)
+
+                else:
+                    # print(all_rows[19])
+                    gran_total_usd.append(float(all_rows[28]))
+
+                if type(all_rows[30]) == type(None):
+                    # print(str(all_rows[19]))
+                    beneficio_usd.append(0)
+
+                else:
+                    # print(all_rows[19])
+                    beneficio_usd.append(float(all_rows[30]))
+
+                if type(all_rows[31]) == type(None):
+                    # print(str(all_rows[19]))
+                    tipo_cambio.append(0)
+
+                else:
+                    # print(all_rows[19])
+                    tipo_cambio.append(float(all_rows[31]))
+
                 negocio_list.append(all_rows[1])
                 servicio_list.append(all_rows[5])
                 proveedor_nombre.append(all_rows[7])
@@ -77,10 +101,10 @@ try:
                 vendedor_nombre.append(all_rows[16])
                 art_categoria.append(all_rows[17])
                 cantidad_list.append(all_rows[18])
-                #gran_total_mxn.append(all_rows[22])
-                gran_total_usd.append(all_rows[28])
-                beneficio_usd.append(all_rows[30])
-                tipo_cambio.append(all_rows[31])
+                # gran_total_mxn.append(all_rows[22])
+                # gran_total_usd.append(all_rows[28])
+                # beneficio_usd.append(all_rows[30])
+                # tipo_cambio.append(all_rows[31])
                 categoria_cte.append(all_rows[33])
                 mes.append(all_rows[34])
                 anio.append(all_rows[35])
@@ -90,8 +114,8 @@ try:
                 nueva_fecha_list.append(fechaAlta_list[counter])
                 fecha_in.append(all_rows[40])
                 fecha_out.append(all_rows[41])
-                semana_alta.append(all_rows[45])
-                mes_alta.append(all_rows[47])
+                semana_alta.append(all_rows[42])
+                mes_alta.append(all_rows[44])
                 # fechaAlta_list.append(all_rows[counter])
 
 
