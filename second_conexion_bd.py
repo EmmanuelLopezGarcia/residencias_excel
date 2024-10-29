@@ -59,13 +59,13 @@ try:
 
             if fechaAlta_list[counter] >= primera_fecha and fechaAlta_list[counter] <= segunda_fecha:
 
-                if type(all_rows[19]) == type(None):
+                if type(all_rows[22]) == type(None):
                     # print(str(all_rows[19]))
-                    # precioMXN_list.append(0)
+                    gran_total_mxn.append(0)
 
                 else:
                     # print(all_rows[19])
-                    # precioMXN_list.append(float(all_rows[19]))
+                    gran_total_mxn.append(float(all_rows[22]))
 
                 negocio_list.append(all_rows[1])
                 servicio_list.append(all_rows[5])
@@ -77,7 +77,7 @@ try:
                 vendedor_nombre.append(all_rows[16])
                 art_categoria.append(all_rows[17])
                 cantidad_list.append(all_rows[18])
-                gran_total_mxn.append(all_rows[22])
+                #gran_total_mxn.append(all_rows[22])
                 gran_total_usd.append(all_rows[28])
                 beneficio_usd.append(all_rows[30])
                 tipo_cambio.append(all_rows[31])
@@ -101,9 +101,31 @@ try:
             all_rows = cursor_fechas.fetchone()
             counter += 1
 
-        dictionario["PrecioMXN"] = precioMXN_list
+        dictionario["Negocio"] = negocio_list
+        dictionario["Servicio"] = servicio_list
+        dictionario["Proveedor_Nombre"] = proveedor_nombre
+        dictionario["Cliente_Nombre"] = cliente_nombre
+        dictionario["Descripcion2"] = descripcion_2
+        dictionario["Oficina_Nombre"] = oficina_nombre
+        dictionario["Pedido"] = pedido
+        dictionario["Vendedor_Nombre"] = vendedor_nombre
+        dictionario["Art_Categoria"] = art_categoria
         dictionario["Cantidad"] = cantidad_list
+        dictionario["Gran_total_mxn"] = gran_total_mxn
+        dictionario["Gran_total_usd"] = gran_total_usd
+        dictionario["Beneficio_Usd"] = beneficio_usd
+        dictionario["Tipo_Cambio"] = tipo_cambio
+        dictionario["Categoria_cte"] = categoria_cte
+        dictionario["Mes"] = mes
+        dictionario["Anio"] = anio
+        dictionario["Codigo_Guia"] = codigo_guia
+        dictionario["Referencia"] = referencia
+        dictionario["Origen"] = origen
         dictionario["FechaAlta"] = nueva_fecha_list
+        dictionario["FechaIn"] = fecha_in
+        dictionario["Fecha_Out"] = fecha_out
+        dictionario["Semana_Alta"] = semana_alta
+        dictionario["Mes_Alta"] = mes_alta
 
         cursor_fechas.close()
 
