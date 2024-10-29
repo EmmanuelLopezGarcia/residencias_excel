@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyodbc
 from datetime import datetime
@@ -9,8 +10,6 @@ try:
         'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db')
     print("Conexión exitosa")
 
-    # cursor = conexion.cursor()
-    # cursor.execute("SELECT  * FROM VwMJVtasOperadora ")
     the_big_dictionary = {}
 
     def FechasAltaAndOut(dictionario):
@@ -49,7 +48,6 @@ try:
         fecha_out = list()
         semana_alta = list()
         mes_alta = list()
-        precioMXN_list = list()
         nueva_fecha_list = list()
 
         while all_rows is not None:
@@ -101,10 +99,6 @@ try:
                 vendedor_nombre.append(all_rows[16])
                 art_categoria.append(all_rows[17])
                 cantidad_list.append(all_rows[18])
-                # gran_total_mxn.append(all_rows[22])
-                # gran_total_usd.append(all_rows[28])
-                # beneficio_usd.append(all_rows[30])
-                # tipo_cambio.append(all_rows[31])
                 categoria_cte.append(all_rows[33])
                 mes.append(all_rows[34])
                 anio.append(all_rows[35])
@@ -116,11 +110,6 @@ try:
                 fecha_out.append(all_rows[41])
                 semana_alta.append(all_rows[42])
                 mes_alta.append(all_rows[44])
-                # fechaAlta_list.append(all_rows[counter])
-
-
-            # print(all_rows[18], all_rows[19], fechaAlta_list[counter])
-            # print(fechaAlta_list[counter])
 
             all_rows = cursor_fechas.fetchone()
             counter += 1
@@ -151,44 +140,25 @@ try:
         dictionario["Semana_Alta"] = semana_alta
         dictionario["Mes_Alta"] = mes_alta
 
+        plt.figure(figsize=(14, 8))  # Aumentar el tamaño de la figura
+        plt.bar(vendedor_nombre, cantidad_list, color='skyblue')
+
+        # Títulos y etiquetas
+        plt.title('Cantidad por Vendedor', fontsize=16)
+        plt.xlabel('Vendedor', fontsize=10)
+        plt.ylabel('Cantidad', fontsize=14)
+
+        # Rotar etiquetas del eje x
+        plt.xticks(rotation=45, ha='right', fontsize=12)
+
+        # Agregar cuadrícula
+        plt.grid(axis='y')
+
+        plt.savefig(r'D:\Prueba_pycharm\conexión_bd\grafica_prueba.png', format='png')
+
         cursor_fechas.close()
 
         return dictionario
-
-    """
-    def PrecioMXN():
-
-        cursor_precios = conexion.cursor()
-        cursor_precios.execute("SELECT * FROM VwMJVtasOperadora")
-
-        all_rows = cursor_precios.fetchone()
-
-        precioMXN_list = list()
-
-        counter = 0
-
-        while all_rows is not None:
-
-            if type(all_rows[19]) == type(None):
-
-                # print(str(all_rows[19]))
-                precioMXN_list.append(0)
-                all_rows = cursor_precios.fetchone()
-                counter += 1
-            else:
-
-                # print(all_rows[19])
-                precioMXN_list.append(float(all_rows[19]))
-                all_rows = cursor_precios.fetchone()
-                counter += 1
-
-        cursor_precios.close()
-
-        precioMXN_list.append(counter)
-
-        return precioMXN_list
-        
-        """
 
 
     data_frame = pd.DataFrame(FechasAltaAndOut(the_big_dictionary))
