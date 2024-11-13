@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pyodbc
 from datetime import datetime
+import tkinter as tk
+from tkinter import PhotoImage
 
 # Se aplica un try/except para la conexión a la BDD
 try:
@@ -22,7 +24,7 @@ try:
     the_big_dictionary = {}
 
     # Se crea la función que contiene toda la lógica basandose en el filtro aplicado al campo "FechasAlta"
-    def FechasAltaAndOut(dictionario):
+    def FechasAltaAndOut(dictionario, fecha_uno, fecha_dos):
 
         # Se crean los cursores que van a leer la BDD
         cursor_fechas = conexion.cursor()
@@ -34,8 +36,10 @@ try:
         all_rows = cursor_fechas.fetchone()
 
         # Se crean las variables que filtran el rango de fechas a seleccionar
-        primera_fecha = datetime.strptime(input("Ingrese la primera fecha (YYYY-MM-DD): "), '%Y-%m-%d')
-        segunda_fecha = datetime.strptime(input("Ingrese la segunda fecha(YYYY-MM-DD): "), '%Y-%m-%d')
+        #primera_fecha = datetime.strptime(input("Ingrese la primera fecha (YYYY-MM-DD): "), '%Y-%m-%d')
+        primera_fecha = datetime.strptime(fecha_uno, "%Y-%m-%d")
+        #segunda_fecha = datetime.strptime(input("Ingrese la segunda fecha(YYYY-MM-DD): "), '%Y-%m-%d')
+        segunda_fecha = datetime.strptime(fecha_dos, "%Y-%m-%d")
 
         # Creación de las listas en donde se almacenarán los datos de cada columna de la base de datos
         counter = 0
@@ -193,11 +197,77 @@ try:
         # Retornamos el diccionario
         return dictionario
 
-    # Creamos la variable data_frame que contendra el diccionario de la funcion FechasAltaAndOut
-    data_frame = pd.DataFrame(FechasAltaAndOut(the_big_dictionary))
 
-    # Posteriormente exportamos el dataframe como archivo xlsx en la ruta indicada
-    data_frame.to_excel(r'D:\Prueba_pycharm\conexión_bd\VVta.xlsx', index=False)
+    # Se crea la ventana principal
+    ventana = tk.Tk()
+
+    # se le añade titulo, dimensiones, icono, no ajustable y atributos
+    ventana.title("Travel Shop Ventas")
+    ventana.geometry("400x400+500+200")
+    ventana.iconbitmap("images/travel_icon.ico")
+    ventana.configure(background="lightblue")
+    ventana.resizable(width=False, height=False)
+    ventana.attributes("-alpha", 0.95)
+
+    # Se crea el primer frame que contiene la imagen
+    frame_for_image = tk.Frame(ventana)
+    frame_for_image.pack(padx=5, pady=5)
+
+    # Se crea la variable que contiene a la imagen y se le asigna al frame para la imagen
+    travel_image = tk.PhotoImage(file="./images/travel_shop_icon.png")
+    label_for_image = tk.Label(frame_for_image, image=travel_image)
+    label_for_image.pack()
+
+    # Se crea el frame para las fechas
+    frame_for_dates = tk.Frame(ventana)
+    frame_for_dates.pack(padx=5, pady=5)
+
+    # Se crean el primer label con la leyenda de ingresar el rango de FechaAlta
+    label_for_fecha_1 = tk.Label(frame_for_dates, text="Ingrese el rango de FechaAlta\rDel:",
+                                 font=("Arial", 11, "italic"))
+    label_for_fecha_1.pack()
+
+    # Se crea el primer entry para ingresar la primera fecha
+    entry_for_date_1 = tk.Entry(frame_for_dates, fg="white", bg="gray", font=("Arial", 10, "italic"))
+    entry_for_date_1.pack()
+    entry_for_date_1.insert(0, "YYYY-MM-DD")
+
+    # Se crea el segundo label con la leyenda Al
+    label_for_fecha_2 = tk.Label(frame_for_dates, text="Al:", font=("Arial", 11, "italic"))
+    label_for_fecha_2.pack()
+
+    # Se crea el segundo entry para ingresar la segunda fecha
+    entry_for_date_2 = tk.Entry(frame_for_dates, fg="white", bg="gray", font=("Arial", 10, "italic"))
+    entry_for_date_2.pack(padx=5, pady=5)
+    entry_for_date_2.insert(0, "YYYY-MM-DD")
+
+    # Se crea el frame para le boton
+    frame_for_boton = tk.Frame(ventana)
+    frame_for_boton.pack(padx=5, pady=5)
+
+    # Se crea la funcion que creara el excel al apretar el boton
+    def CrearExcel():
+
+        # Se guardan los valores de las fechas
+        date_one = entry_for_date_1.get()
+        date_two = entry_for_date_2.get()
+
+        # Creamos la variable data_frame que contendra el diccionario de la funcion FechasAltaAndOut
+        data_frame = pd.DataFrame(FechasAltaAndOut(the_big_dictionary, date_one, date_two))
+
+        # Posteriormente exportamos el dataframe como archivo xlsx en la ruta indicada
+        data_frame.to_excel(r'D:\Prueba_pycharm\conexión_bd\VVta.xlsx', index=False)
+
+    # Se crea el boton para crear archivo Excel
+    # Se crea el evento al presionar el boton, mismo que llama a la funcion para crear el excel
+    boton = tk.Button(frame_for_boton, text="Precione para generar Excel!", font=("Arial", 10, "italic"),
+                      command=CrearExcel)
+
+    boton.config(fg="white", bg="green")
+    boton.pack()
+
+    ventana.mainloop()
+
 
 # En caso de que la conexión con la BD sea erronea se levanta la excepción e imrpime el error.
 except Exception as e:
@@ -205,8 +275,14 @@ except Exception as e:
     print(e)
 
 # Finalmente cerramos la conexión con la BD e imprimimos que finalizó la conexión
+
 finally:
 
     conexion.close()
 
     print("Conexión finalizada")
+
+
+
+
+
