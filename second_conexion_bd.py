@@ -1,6 +1,5 @@
 # Importamos las librerías necesarias
-import numpy as np
-import matplotlib.pyplot as plt
+
 import pandas as pd
 import pyodbc
 from datetime import datetime
@@ -214,7 +213,7 @@ try:
     frame_for_image.pack(padx=5, pady=5)
 
     # Se crea la variable que contiene a la imagen y se le asigna al frame para la imagen
-    travel_image = tk.PhotoImage(file="./images/travel_shop_icon.png")
+    travel_image = tk.PhotoImage(file="images/travel_shop_icon.png")
     label_for_image = tk.Label(frame_for_image, image=travel_image)
     label_for_image.pack()
 
@@ -256,7 +255,7 @@ try:
         data_frame = pd.DataFrame(FechasAltaAndOut(the_big_dictionary, date_one, date_two))
 
         # Posteriormente exportamos el dataframe como archivo xlsx en la ruta indicada
-        data_frame.to_excel(r'D:\Prueba_pycharm\conexión_bd\VVta.xlsx', index=False)
+        data_frame.to_excel(r'D:\Prueba_pycharm\conexión_bd\Archivo_ventas.xlsx', index=False)
 
     # Se crea el boton para crear archivo Excel
     # Se crea el evento al presionar el boton, mismo que llama a la funcion para crear el excel
