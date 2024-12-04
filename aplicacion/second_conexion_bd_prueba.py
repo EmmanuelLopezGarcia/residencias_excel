@@ -15,13 +15,13 @@ try:
     conexion = pyodbc.connect(
 
         # Se coloca la información de la BDD
-        # 'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db_2'
-        'Driver={ODBC Driver 17 for SQL Server};'
-        'Server=operadora;'
-        'UID=sa;'
-        'PWD=S5pN3_F7o;'
-        'Trusted_Connection=No;'
-        'Database=mundojoven_db;'
+        'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db_2'
+        #'Driver={ODBC Driver 17 for SQL Server};'
+        #'Server=operadora;'
+        #'UID=sa;'
+        #'PWD=S5pN3_F7o;'
+        #'Trusted_Connection=No;'
+        #'Database=mundojoven_db;'
 
     )
 
@@ -39,7 +39,7 @@ try:
         cursor_fechas = conexion.cursor()
 
         # El cursor ejecuta un select
-        cursor_fechas.execute("SELECT * FROM VwMJVtasOperadora")
+        cursor_fechas.execute("SELECT * FROM OTSFiles_M1")
 
         # Las filas son obtenidas una por una gracias a "fetchone"
         all_rows = cursor_fechas.fetchone()
@@ -62,8 +62,8 @@ try:
         vendedor_nombre = list()
         art_categoria = list()
         cantidad_list = list()
-        gran_total_mxn = list()
-        gran_total_usd = list()
+        gran_total_mx = list()
+        costo_usd = list()
         beneficio_usd = list()
         tipo_cambio = list()
         categoria_cte = list()
@@ -85,7 +85,7 @@ try:
         while all_rows is not None:
 
             # Creamos una variable date que guarda el valor de la columna 39 de la base de datos que es FechaAlta
-            date = datetime.strptime(str(all_rows[39]), '%Y-%m-%d %H:%M:%S')
+            date = datetime.strptime(str(all_rows[38]), '%Y-%m-%d %H:%M:%S')
 
             # Despues guardamos ese dato en la lista fechaAlta_list
             fechaAlta_list.append(date)
@@ -96,30 +96,30 @@ try:
 
                 # Si el valor del dato de la columna 22 de la BD es igual a None entonces se guarda en la lista
                 # gran_total_mxn el valor 0
-                if type(all_rows[22]) == type(None):
+                if type(all_rows[21]) == type(None):
 
-                    gran_total_mxn.append(0)
+                    gran_total_mx.append(0)
 
                 # De lo contrario se guarda el valor de la columna 22 en la lista gran_total_mxn pero se transforma a
                 # float
                 else:
-                    gran_total_mxn.append(float(all_rows[22]))
+                    gran_total_mx.append(float(all_rows[21]))
 
                 # Si el valor del dato de la columna 28 de la BD es igual a None entonces se guarda en la lista
-                # gran_total_usd el valor 0
+                # costo_usd el valor 0
                 if type(all_rows[28]) == type(None):
 
-                    gran_total_usd.append(0)
+                    costo_usd.append(0)
 
                 # De lo contrario se guarda el valor de la columna 28 en la lista gran_total_usd pero se transforma a
                 # float
                 else:
 
-                    gran_total_usd.append(float(all_rows[28]))
+                    costo_usd.append(float(all_rows[28]))
 
                 # Si el valor del dato de la columna 30 de la BD es igual a None entonces se guarda en la lista
                 # beneficio_usd el valor 0
-                if type(all_rows[30]) == type(None):
+                if type(all_rows[29]) == type(None):
 
                     beneficio_usd.append(0)
 
@@ -127,11 +127,11 @@ try:
                 # float
                 else:
 
-                    beneficio_usd.append(float(all_rows[30]))
+                    beneficio_usd.append(float(all_rows[29]))
 
                 # Si el valor del dato de la columna 31 de la BD es igual a None entonces se guarda en la lista
                 # tipo_cambio el valor 0
-                if type(all_rows[31]) == type(None):
+                if type(all_rows[30]) == type(None):
 
                     tipo_cambio.append(0)
 
@@ -139,33 +139,33 @@ try:
                 # float
                 else:
 
-                    tipo_cambio.append(float(all_rows[31]))
+                    tipo_cambio.append(float(all_rows[30]))
 
                 # Despues de las validaciones para limpiar los datos numericos de la BD se procede a guardar cada
                 # uno ce los datos de las columnas seleccionadas para cada lista creada
                 negocio_list.append(all_rows[1])
-                servicio_list.append(all_rows[5])
-                proveedor_nombre.append(all_rows[7])
-                cliente_nombre.append(all_rows[9])
-                descripcion_2.append(all_rows[10])
-                oficina_nombre.append(all_rows[11])
-                pedido.append(all_rows[13])
-                vendedor_nombre.append(all_rows[16])
-                art_categoria.append(all_rows[17])
-                cantidad_list.append(all_rows[18])
-                categoria_cte.append(all_rows[33])
-                mes.append(all_rows[34])
-                anio.append(all_rows[35])
-                codigo_guia.append(all_rows[36])
-                referencia.append(all_rows[37])
-                origen.append(all_rows[38])
+                servicio_list.append(all_rows[4])
+                proveedor_nombre.append(all_rows[6])
+                cliente_nombre.append(all_rows[8])
+                descripcion_2.append(all_rows[9])
+                oficina_nombre.append(all_rows[10])
+                pedido.append(all_rows[12])
+                vendedor_nombre.append(all_rows[15])
+                art_categoria.append(all_rows[16])
+                cantidad_list.append(all_rows[17])
+                categoria_cte.append(all_rows[32])
+                mes.append(all_rows[33])
+                anio.append(all_rows[34])
+                codigo_guia.append(all_rows[35])
+                referencia.append(all_rows[36])
+                origen.append(all_rows[37])
                 # En la lista nueva_fecha_list se guarda el dato de la lista fechaAlta que se creo al inicio,
                 # esto para no tener conflicto al pasar los datos al DataFrame y al mismo bucle
                 nueva_fecha_list.append(fechaAlta_list[counter])
-                fecha_in.append(all_rows[40])
-                fecha_out.append(all_rows[41])
-                semana_alta.append(all_rows[42])
-                mes_alta.append(all_rows[44])
+                fecha_in.append(all_rows[39])
+                fecha_out.append(all_rows[40])
+                # semana_alta.append(all_rows[42])
+                # mes_alta.append(all_rows[44])
 
             # Al terminar el bucle se vuelve a gurardar la siguiente fila de la BD en all_rows para que continue el
             # bucle, así hasta que se terminen todas las filas
@@ -185,8 +185,8 @@ try:
         dictionario["Vendedor_Nombre"] = vendedor_nombre
         dictionario["Art_Categoria"] = art_categoria
         dictionario["Cantidad"] = cantidad_list
-        dictionario["Gran_total_mxn"] = gran_total_mxn
-        dictionario["Gran_total_usd"] = gran_total_usd
+        dictionario["Gran_total_mxn"] = gran_total_mx
+        dictionario["Costo_usd"] = costo_usd
         dictionario["Beneficio_Usd"] = beneficio_usd
         dictionario["Tipo_Cambio"] = tipo_cambio
         dictionario["Categoria_cte"] = categoria_cte
@@ -198,8 +198,8 @@ try:
         dictionario["FechaAlta"] = nueva_fecha_list
         dictionario["FechaIn"] = fecha_in
         dictionario["Fecha_Out"] = fecha_out
-        dictionario["Semana_Alta"] = semana_alta
-        dictionario["Mes_Alta"] = mes_alta
+        # dictionario["Semana_Alta"] = semana_alta
+        # dictionario["Mes_Alta"] = mes_alta
 
         # Se cierra el cursor que apunta a la base de datos
         cursor_fechas.close()
@@ -215,8 +215,8 @@ try:
         del vendedor_nombre
         del art_categoria
         del cantidad_list
-        del gran_total_mxn
-        del gran_total_usd
+        del gran_total_mx
+        del costo_usd
         del beneficio_usd
         del tipo_cambio
         del categoria_cte
@@ -228,8 +228,8 @@ try:
         del fechaAlta_list
         del fecha_in
         del fecha_out
-        del semana_alta
-        del mes_alta
+        # del semana_alta
+        # del mes_alta
         del nueva_fecha_list
 
         gc.collect()
@@ -244,7 +244,7 @@ try:
         cursor_fechas_in = conexion.cursor()
 
         # El cursor ejecuta un select
-        cursor_fechas_in.execute("SELECT * FROM VwMJVtasOperadora")
+        cursor_fechas_in.execute("SELECT * FROM OTSFiles_M1")
 
         # Las filas son obtenidas una por una gracias a "fetchone"
         all_rows_in = cursor_fechas_in.fetchone()
@@ -271,24 +271,36 @@ try:
         # el bucle, de lo contrario se termina
         while all_rows_in is not None:
 
-            # Creamos una variable date que guarda el valor de la columna 39 de la base de datos que es FechaAlta
-            date = datetime.strptime(str(all_rows_in[40]), '%Y-%m-%d %H:%M:%S')
+            # print(contador2)
 
-            # Despues guardamos ese dato en la lista fechaAlta_list
-            fechaIn.append(date)
+            # print(str(all_rows_in[39]))
 
-            # Posteriormente evaluamos cada fecha de la lista con un contador, si la fecha esta dentro del rango
-            # propuesto entonces entramos en los cuatro IF's para limpiar datos numericos:
-            if fechaIn[contador2] >= primera_fecha_in and fechaIn[contador2] <= segunda_fecha_in:
+            if all_rows_in[39] is not None:
 
-                servicio_list_in.append(all_rows_in[5])
-                proveedor_nombre_in.append(all_rows_in[7])
-                cliente_nombre_in.append(all_rows_in[9])
-                descripcion_2_in.append(all_rows_in[10])
-                oficina_nombre_in.append(all_rows_in[11])
-                pedido_in.append(all_rows_in[13])
-                vendedor_nombre_in.append(all_rows_in[16])
-                nueva_fecha_in.append(fechaIn[contador2])
+                # print(str(all_rows_in[38]))
+
+                # Creamos una variable date que guarda el valor de la columna 39 de la base de datos que es FechaAlta
+                date = datetime.strptime(str(all_rows_in[39]), '%Y-%m-%d %H:%M:%S')
+
+                # Despues guardamos ese dato en la lista fechaAlta_list
+                fechaIn.append(date)
+
+                # Posteriormente evaluamos cada fecha de la lista con un contador, si la fecha esta dentro del rango
+                # propuesto entonces entramos en los cuatro IF's para limpiar datos numericos:
+                if fechaIn[contador2] >= primera_fecha_in and fechaIn[contador2] <= segunda_fecha_in:
+
+                    servicio_list_in.append(all_rows_in[4])
+                    proveedor_nombre_in.append(all_rows_in[6])
+                    cliente_nombre_in.append(all_rows_in[8])
+                    descripcion_2_in.append(all_rows_in[9])
+                    oficina_nombre_in.append(all_rows_in[10])
+                    pedido_in.append(all_rows_in[12])
+                    vendedor_nombre_in.append(all_rows_in[15])
+                    nueva_fecha_in.append(fechaIn[contador2])
+
+            else:
+
+                fechaIn.append(0)
 
             # Al terminar el bucle se vuelve a gurardar la siguiente fila de la BD en all_rows para que continue el
             # bucle, así hasta que se terminen todas las filas
@@ -383,8 +395,8 @@ try:
         df_plot = pd.DataFrame()
 
         # Se copia la informacion en el data frame
-        df_plot[['Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Gran_total_usd']] = df2[[
-            'Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Gran_total_usd']]
+        df_plot[['Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Costo_usd']] = df2[[
+            'Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Costo_usd']]
 
         # Se crea el data frame especifico para la grafica de seguros
         df_plot_seguro = df_plot[df_plot[
@@ -393,20 +405,20 @@ try:
         # ***** GRAFICO SEGURO VENTAS ******
 
         # Agrupar las ventas por Descripcion2, sumando el Gran_total_usd
-        ventas_por_descripcion = df_plot_seguro.groupby('Descripcion2')['Gran_total_usd'].sum().reset_index()
+        ventas_por_descripcion = df_plot_seguro.groupby('Descripcion2')['Costo_usd'].sum().reset_index()
 
         # Ordenar las descripciones por el total de ventas, de mayor a menor
-        ventas_por_descripcion = ventas_por_descripcion.sort_values(by='Gran_total_usd', ascending=False)
+        ventas_por_descripcion = ventas_por_descripcion.sort_values(by='Costo_usd', ascending=False)
 
         # Configuración de la figura
         plt.figure(figsize=(12, 8))
 
         # Gráfico de barras
-        sns.barplot(x='Gran_total_usd', y='Descripcion2', data=ventas_por_descripcion, palette='viridis')
+        sns.barplot(x='Costo_usd', y='Descripcion2', data=ventas_por_descripcion, palette='viridis')
 
         # Añadir título y etiquetas
         plt.title('Ventas por Descripción', fontsize=16)
-        plt.xlabel('Total en USD', fontsize=12)
+        plt.xlabel('Total Costo en USD', fontsize=12)
         plt.ylabel('Descripción', fontsize=12)
 
         # Mostrar los valores sobre las barras
@@ -424,25 +436,25 @@ try:
         # ***** GRAFICO TOP 10 PROVEEDOR VENTAS *****
 
         # Sumar las ventas por proveedor
-        ventas_por_proveedor = df_plot.groupby('Proveedor_Nombre')['Gran_total_usd'].sum().reset_index()
+        ventas_por_proveedor = df_plot.groupby('Proveedor_Nombre')['Costo_usd'].sum().reset_index()
 
         # Ordenar los proveedores por ventas totales en orden descendente
-        ventas_por_proveedor = ventas_por_proveedor.sort_values(by='Gran_total_usd', ascending=False)
+        ventas_por_proveedor = ventas_por_proveedor.sort_values(by='Costo_usd', ascending=False)
 
         # Seleccionar solo los 10 primeros proveedores con más ventas
         ventas_por_proveedor_top10 = ventas_por_proveedor.head(10)
 
         # Identificar el proveedor con más ventas
-        max_ventas = ventas_por_proveedor_top10['Gran_total_usd'].max()
+        max_ventas = ventas_por_proveedor_top10['Costo_usd'].max()
 
         # Crear una columna para resaltar al proveedor con más ventas
-        ventas_por_proveedor_top10['resaltado'] = ventas_por_proveedor_top10['Gran_total_usd'] == max_ventas
+        ventas_por_proveedor_top10['resaltado'] = ventas_por_proveedor_top10['Costo_usd'] == max_ventas
 
         # Configuración de la figura
         plt.figure(figsize=(12, 8))  # Aumentar el tamaño de la figura
 
         # Gráfico de barras horizontal
-        ax = sns.barplot(x='Gran_total_usd', y='Proveedor_Nombre', data=ventas_por_proveedor_top10, palette='viridis',
+        ax = sns.barplot(x='Costo_usd', y='Proveedor_Nombre', data=ventas_por_proveedor_top10, palette='viridis',
                          hue='resaltado', dodge=False)
 
         # Mostrar los valores de "Gran_total_usd" sobre las barras
@@ -457,7 +469,7 @@ try:
 
         # Títulos y etiquetas
         plt.title('Top 10 Proveedores con Más Ventas', fontsize=16)
-        plt.xlabel('Total en USD', fontsize=12)
+        plt.xlabel('Total Costo en USD', fontsize=12)
         plt.ylabel('Proveedor', fontsize=12)
 
         # Hacer el fondo cuadriculado
@@ -469,25 +481,25 @@ try:
         # --- GRAFICO Top 10 VENDEDORES VENTAS ---
 
         # Sumar las ventas por vendedor
-        ventas_por_vendedor = df_plot.groupby('Vendedor_Nombre')['Gran_total_usd'].sum().reset_index()
+        ventas_por_vendedor = df_plot.groupby('Vendedor_Nombre')['Costo_usd'].sum().reset_index()
 
         # Ordenar los vendedores por ventas totales en orden descendente
-        ventas_por_vendedor = ventas_por_vendedor.sort_values(by='Gran_total_usd', ascending=False)
+        ventas_por_vendedor = ventas_por_vendedor.sort_values(by='Costo_usd', ascending=False)
 
         # Seleccionar solo los 10 primeros vendedores con más ventas
         ventas_por_vendedor_top10 = ventas_por_vendedor.head(10)
 
         # Identificar el vendedor con más ventas
-        max_ventas_vendedor = ventas_por_vendedor_top10['Gran_total_usd'].max()
+        max_ventas_vendedor = ventas_por_vendedor_top10['Costo_usd'].max()
 
         # Crear una columna para resaltar al vendedor con más ventas
-        ventas_por_vendedor_top10['resaltado'] = ventas_por_vendedor_top10['Gran_total_usd'] == max_ventas_vendedor
+        ventas_por_vendedor_top10['resaltado'] = ventas_por_vendedor_top10['Costo_usd'] == max_ventas_vendedor
 
         # Configuración de la figura para el gráfico de vendedores
         plt.figure(figsize=(12, 8))  # Aumentar el tamaño de la figura
 
         # Gráfico de barras horizontal para vendedores
-        ax = sns.barplot(x='Gran_total_usd', y='Vendedor_Nombre', data=ventas_por_vendedor_top10, palette='viridis',
+        ax = sns.barplot(x='Costo_usd', y='Vendedor_Nombre', data=ventas_por_vendedor_top10, palette='viridis',
                          hue='resaltado', dodge=False)
 
         # Mostrar los valores de "Gran_total_usd" sobre las barras
@@ -502,7 +514,7 @@ try:
 
         # Títulos y etiquetas
         plt.title('Top 10 Vendedores con Más Ventas', fontsize=16)
-        plt.xlabel('Total en USD', fontsize=12)
+        plt.xlabel('Total Costo en USD', fontsize=12)
         plt.ylabel('Vendedor', fontsize=12)
 
         # Hacer el fondo cuadriculado
@@ -514,25 +526,25 @@ try:
         # ******* GRAFICO NEGOCIO VENTAS ******
 
         # Sumar las ventas por vendedor
-        ventas_por_vendedor = df_plot.groupby('Negocio')['Gran_total_usd'].sum().reset_index()
+        ventas_por_vendedor = df_plot.groupby('Negocio')['Costo_usd'].sum().reset_index()
 
         # Ordenar los vendedores por ventas totales en orden descendente
-        ventas_por_vendedor = ventas_por_vendedor.sort_values(by='Gran_total_usd', ascending=False)
+        ventas_por_vendedor = ventas_por_vendedor.sort_values(by='Costo_usd', ascending=False)
 
         # Seleccionar solo los 10 primeros vendedores con más ventas
         ventas_por_vendedor_top10 = ventas_por_vendedor.head(10)
 
         # Identificar el vendedor con más ventas
-        max_ventas_vendedor = ventas_por_vendedor_top10['Gran_total_usd'].max()
+        max_ventas_vendedor = ventas_por_vendedor_top10['Costo_usd'].max()
 
         # Crear una columna para resaltar al vendedor con más ventas
-        ventas_por_vendedor_top10['resaltado'] = ventas_por_vendedor_top10['Gran_total_usd'] == max_ventas_vendedor
+        ventas_por_vendedor_top10['resaltado'] = ventas_por_vendedor_top10['Costo_usd'] == max_ventas_vendedor
 
         # Configuración de la figura para el gráfico de vendedores
         plt.figure(figsize=(12, 8))  # Aumentar el tamaño de la figura
 
         # Gráfico de barras horizontal para vendedores
-        ax = sns.barplot(x='Gran_total_usd', y='Negocio', data=ventas_por_vendedor_top10, palette='viridis',
+        ax = sns.barplot(x='Costo_usd', y='Negocio', data=ventas_por_vendedor_top10, palette='viridis',
                          hue='resaltado', dodge=False)
 
         # Mostrar los valores de "Gran_total_usd" sobre las barras
@@ -547,7 +559,7 @@ try:
 
         # Títulos y etiquetas
         plt.title('Top 10 Negocios con Más Ventas', fontsize=16)
-        plt.xlabel('Total en USD', fontsize=12)
+        plt.xlabel('Total Costo en USD', fontsize=12)
         plt.ylabel('Negocio', fontsize=12)
 
         # Hacer el fondo cuadriculado
@@ -559,20 +571,20 @@ try:
         # ******* GRAFICA PROVEDOR_SEGUROS_VENTAS *********
 
         # Agrupar las ventas por Proveedor seguros, sumando el Gran_total_usd
-        ventas_por_descripcion = df_plot_seguro.groupby('Proveedor_Nombre')['Gran_total_usd'].sum().reset_index()
+        ventas_por_descripcion = df_plot_seguro.groupby('Proveedor_Nombre')['Costo_usd'].sum().reset_index()
 
         # Ordenar las proveedores por el total de ventas, de mayor a menor
-        ventas_por_descripcion = ventas_por_descripcion.sort_values(by='Gran_total_usd', ascending=False)
+        ventas_por_descripcion = ventas_por_descripcion.sort_values(by='Costo_usd', ascending=False)
 
         # Configuración de la figura
         plt.figure(figsize=(12, 7))
 
         # Gráfico de barras
-        sns.barplot(x='Gran_total_usd', y='Proveedor_Nombre', data=ventas_por_descripcion, palette='viridis')
+        sns.barplot(x='Costo_usd', y='Proveedor_Nombre', data=ventas_por_descripcion, palette='viridis')
 
         # Añadir título y etiquetas
         plt.title('Ventas por Proveedor de seguros', fontsize=16)
-        plt.xlabel('Total en USD', fontsize=12)
+        plt.xlabel('Total Costo en USD', fontsize=12)
         plt.ylabel('Proveedor', fontsize=12)
 
         # Mostrar los valores sobre las barras
@@ -612,16 +624,16 @@ try:
         df7 = pd.DataFrame()
 
         # Se copia la informacion en cada data frame
-        df2[['Vendedor_Nombre', 'Semana_Alta', 'Pedido', 'Negocio', 'Descripcion2']] = df[[
-            'Vendedor_Nombre', 'Semana_Alta', 'Pedido', 'Negocio', 'Descripcion2']]
+        df2[['Vendedor_Nombre', 'Pedido', 'Negocio', 'Descripcion2']] = df[[
+            'Vendedor_Nombre', 'Pedido', 'Negocio', 'Descripcion2']]
         df3[['Proveedor_Nombre', 'Vendedor_Nombre', 'Pedido', 'Negocio', 'Descripcion2']] = df[[
             'Proveedor_Nombre', 'Vendedor_Nombre', 'Pedido', 'Negocio', 'Descripcion2']]
         df4[['Descripcion2', 'FechaAlta', 'Proveedor_Nombre', 'Vendedor_Nombre', 'Pedido']] = df[[
             'Descripcion2', 'FechaAlta', 'Proveedor_Nombre', 'Vendedor_Nombre', 'Pedido']]
         df5[['Vendedor_Nombre', 'Descripcion2', 'Pedido', 'Negocio']] = df[[
             'Vendedor_Nombre', 'Descripcion2', 'Pedido', 'Negocio']]
-        df6[['Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Gran_total_usd']] = df[[
-            'Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Gran_total_usd']]
+        df6[['Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Costo_usd']] = df[[
+            'Vendedor_Nombre', 'Proveedor_Nombre', 'Pedido', 'Descripcion2', 'Negocio', 'Costo_usd']]
         df7[['Cliente_Nombre', 'Vendedor_Nombre', 'Pedido']] = df[['Cliente_Nombre', 'Vendedor_Nombre', 'Pedido']]
 
         # Data frame especifico con filtro para solo mostrar los seguros
