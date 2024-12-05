@@ -7,6 +7,8 @@ import pyodbc
 from datetime import datetime
 import tkinter as tk
 from tkinter import PhotoImage
+from openpyxl.reader.excel import load_workbook
+from openpyxl import load_workbook
 
 # Se aplica un try/except para la conexión a la BDD
 try:
@@ -15,13 +17,13 @@ try:
     conexion = pyodbc.connect(
 
         # Se coloca la información de la BDD
-        'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db_2'
-        #'Driver={ODBC Driver 17 for SQL Server};'
-        #'Server=operadora;'
-        #'UID=sa;'
-        #'PWD=S5pN3_F7o;'
-        #'Trusted_Connection=No;'
-        #'Database=mundojoven_db;'
+        # 'Trusted_Connection=Yes; Driver={ODBC Driver 17 for SQL Server}; UID=sa; Server=Emily; Database=mundojoven_db_2'
+        'Driver={ODBC Driver 17 for SQL Server};'
+        'Server=operadora;'
+        'UID=sa;'
+        'PWD=S5pN3_F7o;'
+        'Trusted_Connection=No;'
+        'Database=mundojoven_db;'
 
     )
 
@@ -609,6 +611,37 @@ try:
         # Se llama a l garbage collector para limpiar memoria
         gc.collect()
 
+    # Se crea la funcion que añade las pestañas al archivo Excel Fechas In
+    def AnadirPestanasExcelFechaIn():
+
+        # Se crea el data frame que guarda la informacion del archivo Excel
+        df = pd.read_excel(r'./Archivos_Excel/Archivo_FechasIn.xlsx')
+
+        # Obtener los valores de la primera columna
+        valores_unicos = df.iloc[:, 0].drop_duplicates()
+
+        # Cargar el archivo Excel existente usando openpyxl
+        book = load_workbook(r'./Archivos_Excel/Archivo_FechasIn.xlsx')
+
+        # Cargar el libro de trabajo existente
+        with pd.ExcelWriter(r'./Archivos_Excel/Archivo_FechasIn.xlsx', engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+            # Cargar el archivo original en el escritor
+            writer.workbook = book
+
+            # Escribir el DataFrame original en la pestaña 'Original' (si no existe)
+            if 'Original' not in writer.book.sheetnames:
+
+                df.to_excel(writer, sheet_name='Original', index=False)
+
+            # Filtrar por cada valor único y agregar nuevas pestañas al archivo existente
+            for valor in valores_unicos:
+                df_filtrado = df[df.iloc[:, 0] == valor]
+                # Escribir cada DataFrame filtrado en una nueva pestaña
+                sheet_name = str(valor)[:31]  # Limitar nombre de la pestaña a 31 caracteres
+                df_filtrado.to_excel(writer, sheet_name=sheet_name, index=False)
+
+            print("Se han añadido nuevas pestañas con los filtros al archivo.")
+
     # Se crea la funcion que añade las pestañas al archivo Excel, este se invoca antes que la funcion de Graficas
     def AnadirPestañasExcel():
 
@@ -710,6 +743,8 @@ try:
 
         # Se elimina el contenido del diccionario
         diccionario_para_in.clear()
+
+        ventana.after(150, AnadirPestanasExcelFechaIn())
 
         # Se libera la memoria
         gc.collect()
